@@ -47,6 +47,6 @@ jobs:
         with:
           name: eliis-archiver-${{ matrix.platform }}
           path: |
-            dist/*.dmg
+            dist/*.zip
             dist/*.exe
           if-no-files-found: ignore
