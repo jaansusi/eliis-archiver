@@ -1,0 +1,200 @@
+:root {
+  --bg: #1b1d23;
+  --panel: #23262e;
+  --panel2: #1f222a;
+  --line: #343843;
+  --text: #e6e8ec;
+  --muted: #9aa0ab;
+  --accent: #4a9eff;
+  --accent-dim: #2f6dbf;
+  --ok: #46c46a;
+  --warn: #d8a13a;
+  --err: #e0625e;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+}
+
+#app {
+  display: flex;
+  height: 100%;
+}
+
+/* ---- sidebar -------------------------------------------------------------- */
+#sidebar {
+  flex: 1;
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.side-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.side-head h1 {
+  font-size: 14px;
+  margin: 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.side-head button { padding: 5px 10px; font-size: 12px; }
+
+.side-section {
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.side-section h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+.side-section.activity {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-bottom: 0;
+}
+
+/* ---- controls ------------------------------------------------------------- */
+button {
+  background: #2c303a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+button:hover:not(:disabled) { background: #353a45; }
+button:disabled { opacity: 0.45; cursor: default; }
+button.primary { background: var(--accent-dim); border-color: var(--accent); }
+button.primary:hover:not(:disabled) { background: var(--accent); }
+button.block { width: 100%; }
+button.active { background: #4a3030; border-color: var(--err); }
+button.active:hover:not(:disabled) { background: #5a3838; }
+
+.field-label {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.child-row { display: flex; gap: 6px; margin-bottom: 12px; }
+.child-row select {
+  flex: 1;
+  min-width: 0;
+  background: #2c303a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+.child-row select:disabled { opacity: 0.5; }
+.child-row button { padding: 6px 10px; }
+
+.outdir {
+  font-size: 12px;
+  margin: 8px 0 12px;
+  word-break: break-all;
+}
+.actions { display: flex; flex-direction: column; gap: 8px; }
+.muted { color: var(--muted); }
+
+#lang {
+  background: #2c303a;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+select:disabled { opacity: 0.45; cursor: default; }
+.check:has(input:disabled) { opacity: 0.45; }
+.check input:disabled { cursor: default; }
+
+/* ---- progress + stats ----------------------------------------------------- */
+.progress {
+  height: 8px;
+  background: #14161b;
+  border-radius: 6px;
+  overflow: hidden;
+}
+#bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.2s ease;
+}
+#bar-fill.done { background: var(--ok); }
+
+.status {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 10px 0 12px;
+  line-height: 1.4;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.stat {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat .num { font-size: 16px; font-weight: 600; }
+.stat .lbl { font-size: 10px; color: var(--muted); }
+
+/* ---- activity log --------------------------------------------------------- */
+#activity {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+#activity li {
+  font-size: 11px;
+  padding: 3px 0;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  border-bottom: 1px solid #2a2e37;
+  white-space: nowrap;
+  overflow: hidden;
+}
+#activity li .ic { flex: 0 0 auto; }
+#activity li .nm { overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+#activity li.ok .ic { color: var(--ok); }
+#activity li.skip .ic { color: var(--warn); }
+#activity li.fail .ic { color: var(--err); }
+#activity .empty { color: var(--muted); border: 0; }

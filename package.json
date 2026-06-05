@@ -1,0 +1,47 @@
+{
+  "name": "eliis-archiver",
+  "version": "1.0.0",
+  "description": "Standalone Chromium app that logs into Eliis, scrapes a child's diary, and downloads photos/videos into an Immich-ready tree.",
+  "main": "src/main.js",
+  "author": "naksid-eliis-pildid",
+  "license": "MIT",
+  "repository": "github:OWNER/naksid-eliis-pildid",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "make-icon": "node scripts/make-icon.js",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:publish": "electron-builder --publish always"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "ee.naksid.eliisarchiver",
+    "productName": "Eliis Archiver",
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.photography",
+      "icon": "build/icon.icns",
+      "identity": null
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# Electron app
+node_modules/
+dist/
+
+# Download artifacts
+*.part
+.DS_Store
+
+# Debug captures (HAR dumps contain session tokens + private data)
+debug/
+
+# Downloaded archive output
+.tmp

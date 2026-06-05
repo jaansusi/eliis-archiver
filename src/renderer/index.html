@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+  <title>Eliis Archiver</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <div class="side-head">
+        <h1 id="appTitle" data-i18n="app.title">Eliis Arhiveerija</h1>
+        <button id="login">Logi sisse</button>
+        <select id="lang" title="Language / Keel">
+          <option value="et">Eesti</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <section class="side-section">
+        <h2 data-i18n="section.settings">Seaded</h2>
+        <label class="field-label" data-i18n="controls.child">Laps</label>
+        <div class="child-row">
+          <select id="child" disabled></select>
+          <button id="childRefresh" title="↻">↻</button>
+        </div>
+        <button id="choose" class="block" data-i18n="controls.choose">Vali sihtkoht</button>
+        <div id="outDir" class="outdir muted" data-i18n="controls.noFolder">Sihtkoht määramata</div>
+        <div class="actions">
+          <button id="btnIndex" class="primary block" disabled>Indekseeri</button>
+          <button id="btnDownload" class="block" disabled>Laadi alla</button>
+        </div>
+      </section>
+
+      <section class="side-section">
+        <h2 data-i18n="section.progress">Edenemine</h2>
+        <div class="progress"><div id="bar-fill"></div></div>
+        <p id="status" class="status muted"></p>
+        <div class="stats">
+          <div class="stat"><span class="num" id="s-discovered">0</span><span class="lbl" data-i18n="stats.discovered">Leitud</span></div>
+          <div class="stat"><span class="num" id="s-downloaded">0</span><span class="lbl" data-i18n="stats.downloaded">Alla laaditud</span></div>
+          <div class="stat"><span class="num" id="s-skipped">0</span><span class="lbl" data-i18n="stats.skipped">Vahele jäetud</span></div>
+          <div class="stat"><span class="num" id="s-failed">0</span><span class="lbl" data-i18n="stats.failed">Ebaõnnestus</span></div>
+          <div class="stat"><span class="num" id="s-queued">0</span><span class="lbl" data-i18n="stats.queued">Järjekorras</span></div>
+          <div class="stat"><span class="num" id="s-active">0</span><span class="lbl" data-i18n="stats.active">Töös</span></div>
+        </div>
+      </section>
+
+      <section class="side-section activity">
+        <h2 data-i18n="section.activity">Tegevus</h2>
+        <ul id="activity"></ul>
+      </section>
+    </aside>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="renderer.js"></script>
+</body>
+</html>
