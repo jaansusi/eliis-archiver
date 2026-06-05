@@ -1,6 +1,6 @@
 {
   "name": "eliis-archiver",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Standalone Chromium app that logs into Eliis, scrapes a child's diary, and downloads photos/videos into an Immich-ready tree.",
   "main": "src/main.js",
   "author": "naksid-eliis-pildid",
