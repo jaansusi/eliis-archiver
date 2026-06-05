@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "author": "naksid-eliis-pildid",
   "license": "MIT",
-  "repository": "github:OWNER/naksid-eliis-pildid",
+  "repository": "github:jaansusi/eliis-archiver",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
@@ -41,7 +41,9 @@
       "allowToChangeInstallationDirectory": true
     },
     "publish": {
-      "provider": "github"
+      "provider": "github",
+      "owner": "jaansusi",
+      "repo": "eliis-archiver"
     }
   }
 }
