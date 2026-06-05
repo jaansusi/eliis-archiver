@@ -22,6 +22,7 @@
   "build": {
     "appId": "ee.naksid.eliisarchiver",
     "productName": "Eliis Archiver",
+    "afterPack": "scripts/afterPack.js",
     "files": [
       "src/**/*",
       "package.json"

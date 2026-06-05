@@ -153,7 +153,7 @@ app.whenReady().then(async () => {
   // Index via the eliis.eu API: walk the child's guardian feed, assign stable
   // indices (reusing known ones so filenames don't change on resume), persist to
   // state, and feed the download pipeline — all in the main process.
-  ipcMain.handle('index-api', async (evt, { outDir, kindergartenId, childId }) => {
+  ipcMain.handle('index-api', async (evt, { outDir, kindergartenId, childId, childName }) => {
     indexStop = false;
     fs.mkdirSync(outDir, { recursive: true });
     const sess = session.fromPartition(PARTITION);
@@ -172,7 +172,7 @@ app.whenReady().then(async () => {
     let res;
     try {
       res = await api.crawlFeed({
-        sess, kindergartenId, childId,
+        sess, kindergartenId, childId, childName,
         shouldStop: () => indexStop,
         onItems: (items) => {
           const withIdx = items.map((it) => {

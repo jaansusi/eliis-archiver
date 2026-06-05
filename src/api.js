@@ -82,9 +82,11 @@ async function getChildren(sess) {
 }
 
 // Extract raw media items (matching the download pipeline's shape, minus index)
-// from one guardian-feed window.
-function itemsFromFeed(feed) {
+// from one guardian-feed window. Items are nested under the child's name so
+// multiple children can share one output folder without colliding.
+function itemsFromFeed(feed, childName) {
   const items = [];
+  const childDir = childName ? sani(childName) : '';
   for (const day of feed.data || []) {
     for (const diary of day.diaries || []) {
       const group = diary.course || 'Eliis';
@@ -92,7 +94,8 @@ function itemsFromFeed(feed) {
       const description = (diary.texts || [])
         .flatMap((t) => (t.summaries || []).map((s) => stripHtml(s.comment)))
         .filter(Boolean).join('\n\n');
-      const folder = sani(`${day.date} ${group}`);
+      const dayDir = sani(`${day.date} ${group}`);
+      const folder = childDir ? `${childDir}/${dayDir}` : dayDir;
       for (const t of diary.texts || []) {
         const media = [...(t.images || []), ...(t.documents || [])];
         for (const m of media) {
@@ -118,7 +121,7 @@ function itemsFromFeed(feed) {
 }
 
 // Walk the feed backwards in time, handing each window's items to onItems.
-async function crawlFeed({ sess, kindergartenId, childId, onItems, shouldStop }) {
+async function crawlFeed({ sess, kindergartenId, childId, childName, onItems, shouldStop }) {
   const base = `${API}/kindergartens/${kindergartenId}/children/${childId}/guardian-feed`;
   let date = new Date().toISOString().slice(0, 10);
   const seen = new Set();
@@ -127,7 +130,7 @@ async function crawlFeed({ sess, kindergartenId, childId, onItems, shouldStop })
     if (shouldStop && shouldStop()) return { stopped: true, total };
     seen.add(date);
     const feed = await apiGetJson(sess, `${base}?date=${date}`);
-    const items = itemsFromFeed(feed);
+    const items = itemsFromFeed(feed, childName);
     if (items.length) { total += items.length; onItems(items); }
     date = feed.next_date || null;
   }

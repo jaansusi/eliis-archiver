@@ -26,7 +26,9 @@ let indexing = false;
 let downloading = false;
 let totalIndexed = 0;
 let childrenLoaded = false;
+let childrenList = [];
 let authed = false;
+let indexStopRequested = false;
 let lastStatus = { key: 'status.initial', vars: null };
 
 // ---- status / progress ------------------------------------------------------
@@ -91,7 +93,14 @@ async function loadChildren() {
     return;
   }
   childrenLoaded = true;
+  childrenList = res.children;
   selChild.innerHTML = '';
+  if (res.children.length > 1) {
+    const all = document.createElement('option');
+    all.value = 'all';
+    all.textContent = t('controls.allChildren');
+    selChild.appendChild(all);
+  }
   for (const c of res.children) {
     const o = document.createElement('option');
     o.value = `${c.kindergartenId}:${c.id}`;
@@ -177,22 +186,38 @@ btnIndex.onclick = () => { if (indexing) stopIndexing(); else startIndexing(); }
 async function startIndexing() {
   if (!outDir || indexing) return;
   if (!selChild.value) { setStatus('status.selectChild'); return; }
-  const [kindergartenId, childId] = selChild.value.split(':').map(Number);
+
+  // One child, or all of them, into the same folder (each under its own name).
+  const targets = selChild.value === 'all'
+    ? childrenList
+    : childrenList.filter((c) => `${c.kindergartenId}:${c.id}` === selChild.value);
+  if (!targets.length) { setStatus('status.selectChild'); return; }
 
   indexing = true;
+  indexStopRequested = false;
   updateButtons();
   setStatus('status.indexing');
   await window.api.sessionOpen({ outDir });
 
-  const res = await window.api.indexApi({ outDir, kindergartenId, childId });
+  let stopped = false;
+  for (const c of targets) {
+    if (indexStopRequested) { stopped = true; break; }
+    const res = await window.api.indexApi({
+      outDir, kindergartenId: c.kindergartenId, childId: c.id, childName: c.name,
+    });
+    if (res.stopped) { stopped = true; break; }
+  }
 
   indexing = false;
   updateButtons();
-  totalIndexed = res.total;
-  if (!downloading) setStatus(res.total ? 'status.indexed' : 'status.noPhotos', { n: res.total });
+  if (!downloading) {
+    if (stopped) setStatus('status.indexed', { n: totalIndexed });
+    else setStatus(totalIndexed ? 'status.indexed' : 'status.noPhotos', { n: totalIndexed });
+  }
 }
 
 async function stopIndexing() {
+  indexStopRequested = true;
   setStatus('status.stoppingIndex');
   await window.api.indexStop();
 }
