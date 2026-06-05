@@ -44,7 +44,8 @@
     "publish": {
       "provider": "github",
       "owner": "jaansusi",
-      "repo": "eliis-archiver"
+      "repo": "eliis-archiver",
+      "releaseType": "release"
     }
   }
 }
